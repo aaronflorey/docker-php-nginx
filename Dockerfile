@@ -1,8 +1,7 @@
 FROM php:7.4-fpm-alpine
 
-
 # Setup extensions
-RUN apk add --no-cache \
+RUN apk add --update --no-cache \
       freetype \
       libjpeg-turbo \
       libpng \
@@ -17,12 +16,23 @@ RUN apk add --no-cache \
       nginx \
       supervisor \
       curl \
+      autoconf \
+      g++ \
+      imagemagick \
+      imagemagick-dev \
+      libtool \
+      make \
+      pcre-dev \
+      jpegoptim \ 
+      optipng \
+      pngquant \ 
     && docker-php-ext-configure gd \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip \
-    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip exif \
+    && pecl install redis imagick \
+    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis imagick exif \
     && apk del --no-cache \
       freetype-dev \
       libjpeg-turbo-dev \
@@ -30,12 +40,13 @@ RUN apk add --no-cache \
       oniguruma-dev \
       libxml2-dev \
       curl-dev \
+      autoconf \
+      g++ \
+      libtool \
+      make \
+      pcre-dev \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
-
-# Install Redis
-RUN pecl install redis \
-    && docker-php-ext-enable redis
 
 RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer && composer global require hirak/prestissimo
 
