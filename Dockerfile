@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-fpm-alpine as base
 
 # Setup extensions
 RUN apk add --update --no-cache \
@@ -80,3 +80,18 @@ CMD ["sh","/entrypoint.sh"]
 
 # Configure a healthcheck to validate that everything is up&running
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping
+
+FROM base as mssql
+RUN curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.5.1.1-1_amd64.apk -O \
+    && curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.5.1.1-1_amd64.apk -O \
+    && apk add --allow-untrusted msodbcsql17_17.5.1.1-1_amd64.apk \
+    && apk add --allow-untrusted mssql-tools_17.5.1.1-1_amd64.apk \
+    # at the mssql-tools binary to the path.
+    && export PATH="$PATH:/opt/mssql-tools/bin" \
+    && apk add --update --no-cache unixodbc-dev $PHPIZE_DEPS unixodbc freetds freetds-dev \
+    && docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr  \
+    && docker-php-ext-install pdo_odbc \
+    && pecl install pdo_sqlsrv sqlsrv \
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv pdo_odbc \
+    && apk del --no-cache $PHPIZE_DEPS freetds-dev unixodbc-dev \
+    && rm -rf /tmp/*
