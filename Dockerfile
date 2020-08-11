@@ -26,6 +26,7 @@ RUN apk add --update --no-cache \
       jpegoptim \ 
       optipng \
       pngquant \ 
+      nano \
     && docker-php-ext-configure gd \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
