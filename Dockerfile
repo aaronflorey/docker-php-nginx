@@ -42,14 +42,13 @@ RUN apk add --update --no-cache \
       oniguruma-dev \
       libxml2-dev \
       curl-dev \
-      libzip-dev \
-      $PHPIZE_DEPS \
       autoconf \
       g++ \
       libtool \
       make \
       pcre-dev \
       imagemagick-dev \
+      $PHPIZE_DEPS \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
 
