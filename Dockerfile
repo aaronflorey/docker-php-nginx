@@ -1,5 +1,7 @@
 FROM php:7.4-fpm-alpine as base
 
+RUN apk add --update --no-cache 'imagemagick<7' 'imagemagick-dev<7' --repository=http://dl-cdn.alpinelinux.org/alpine/v3.5/main
+
 # Setup extensions
 RUN apk add --update --no-cache \
       freetype \
@@ -18,8 +20,6 @@ RUN apk add --update --no-cache \
       curl \
       autoconf \
       g++ \
-      imagemagick \
-      imagemagick-dev \
       libtool \
       make \
       pcre-dev \
@@ -34,7 +34,7 @@ RUN apk add --update --no-cache \
     && docker-php-ext-configure zip \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip exif pcntl \
     && pecl install redis imagick \
-    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis imagick exif pcntl \
+    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick \
     && apk del --no-cache \
       freetype-dev \
       libjpeg-turbo-dev \
@@ -42,11 +42,14 @@ RUN apk add --update --no-cache \
       oniguruma-dev \
       libxml2-dev \
       curl-dev \
+      libzip-dev \
+      $PHPIZE_DEPS \
       autoconf \
       g++ \
       libtool \
       make \
       pcre-dev \
+      imagemagick-dev \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
 
