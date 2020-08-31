@@ -60,10 +60,6 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 COPY config/php.ini /etc/php7/conf.d/custom.ini
 
-# configure crond
-RUN mkdir /etc/periodic/1min \ 
-    && echo "*       *       *       *       *       php /var/www/html/artisan schedule:run" > /var/spool/cron/crontabs/root
-
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
