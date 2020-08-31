@@ -62,8 +62,7 @@ COPY config/php.ini /etc/php7/conf.d/custom.ini
 
 # configure crond
 RUN mkdir /etc/periodic/1min \ 
-    && echo "* * * * * run-parts /etc/periodic/1min" >> /etc/crontabs/root \
-    && echo "php /var/www/html/artisan schedule:run" >> /etc/periodic/1min/schedule
+    && echo "*       *       *       *       *       php /var/www/html/artisan schedule:run" > /var/spool/cron/crontabs/root
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
