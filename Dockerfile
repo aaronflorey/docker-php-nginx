@@ -28,6 +28,7 @@ RUN apk add --update --no-cache \
       pngquant \ 
       vim \
       nano \
+      busybox \
     && docker-php-ext-configure gd \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
@@ -58,6 +59,11 @@ RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --fil
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 COPY config/php.ini /etc/php7/conf.d/custom.ini
+
+# configure crond
+RUN mkdir /etc/periodic/1min \ 
+    && echo "* * * * * run-parts /etc/periodic/1min" >> /etc/crontabs/root \
+    && echo "php /var/www/html/artisan schedule:run" >> /etc/periodic/1min/schedule
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
