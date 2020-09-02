@@ -33,9 +33,9 @@ RUN apk add --update --no-cache \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip exif pcntl \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip exif pcntl sockets \
     && pecl install redis imagick \
-    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick \
+    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick sockets \
     && apk del --no-cache \
       freetype-dev \
       libjpeg-turbo-dev \
