@@ -16,11 +16,32 @@ jobs:
           repository: buckhamduffy/docker-php-nginx
           target: base
           tags: latest, php7.4
+
+      - name: Build and Push Base Docker Image to Github
+        uses: docker/build-push-action@v1
+        with:
+          username: aaronflorey
+          password: ${{ secrets.GH_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: buckhamduffy/docker-php-nginx/base
+          target: base
+          tags: latest, php7.4
+
       - name: Build and Push MSSQL Docker Image
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: buckhamduffy/docker-php-nginx
+          target: mssql
+          tags: mssql,php7.4-mssql
+
+      - name: Build and Push MSSQL Docker Image
+        uses: docker/build-push-action@v1
+        with:
+          username: aaronflorey
+          password: ${{ secrets.GH_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: buckhamduffy/docker-php-nginx/mssql
           target: mssql
           tags: mssql,php7.4-mssql
