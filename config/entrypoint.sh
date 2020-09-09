@@ -9,7 +9,11 @@ fi
 
 # if we have an env called cron that equals 1, add it to the cronjob
 if [ "$cron" -eq "1" ]; then
-   echo "*       *       *       *       *       php /var/www/html/artisan schedule:run" > /var/spool/cron/crontabs/root
+   cp /etc/supervisor/extras/cron.conf /etc/supervisor/conf.d/cron.conf
+fi
+
+if ["$queue" -eq "1"]; then
+    cp /etc/supervisor/extras/queue.conf /etc/supervisor/conf.d/queue.conf
 fi
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
