@@ -16,4 +16,4 @@ if ["$queue" -eq "1"]; then
     cp /etc/supervisor/extras/queue.conf /etc/supervisor/conf.d/queue.conf
 fi
 
-/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf

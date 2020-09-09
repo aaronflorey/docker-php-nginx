@@ -62,7 +62,7 @@ COPY config/php.ini /etc/php7/conf.d/custom.ini
 
 # Configure supervisord
 RUN mkdir -p /etc/supervisor/extras/
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY config/supervisord.conf /etc/supervisor/supervisord.conf
 COPY config/supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY config/supervisor/php.conf /etc/supervisor/conf.d/php.conf
 COPY config/supervisor/cron.conf /etc/supervisor/extras/cron.conf
