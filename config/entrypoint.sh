@@ -12,7 +12,7 @@ if [ "$cron" -eq "1" ]; then
    cp /etc/supervisor/extras/cron.conf /etc/supervisor/conf.d/cron.conf
 fi
 
-if ["$queue" -eq "1"]; then
+if [ "$queue" -eq "1" ]; then
     cp /etc/supervisor/extras/queue.conf /etc/supervisor/conf.d/queue.conf
 fi
 
