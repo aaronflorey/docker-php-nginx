@@ -16,4 +16,8 @@ if [ "$queue" -eq "1" ]; then
     cp /etc/supervisor/extras/queue.conf /etc/supervisor/conf.d/queue.conf
 fi
 
+if [ "$horizon" -eq "1" ]; then
+    cp /etc/supervisor/extras/horizon.conf /etc/supervisor/conf.d/horizon.conf
+fi
+
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
