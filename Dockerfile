@@ -63,10 +63,7 @@ COPY config/php.ini /etc/php7/conf.d/custom.ini
 # Configure supervisord
 RUN mkdir -p /etc/supervisor/extras/
 COPY config/supervisord.conf /etc/supervisor/supervisord.conf
-COPY config/supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
-COPY config/supervisor/php.conf /etc/supervisor/conf.d/php.conf
-COPY config/supervisor/cron.conf /etc/supervisor/extras/cron.conf
-COPY config/supervisor/queue.conf /etc/supervisor/extras/queue.conf
+COPY config/supervisor /etc/supervisor/conf.d
 
 # configure cron
 RUN echo "*       *       *       *       *       php /var/www/html/artisan schedule:run" > /var/spool/cron/crontabs/root
