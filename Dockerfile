@@ -57,8 +57,9 @@ RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --fil
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
-COPY config/php.ini /etc/php7/conf.d/custom.ini
+COPY config/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY config/php.ini "$PHP_INI_DIR/conf.d/custom.ini"
 
 # Configure supervisord
 RUN mkdir -p /etc/supervisor/extras/
