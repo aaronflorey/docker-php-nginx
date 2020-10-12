@@ -57,7 +57,7 @@ RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --fil
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY config/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+COPY config/php-fpm.conf /usr/local/etc/php-fpm.d/custom.conf
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY config/php.ini "$PHP_INI_DIR/conf.d/custom.ini"
 
