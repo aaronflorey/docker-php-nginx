@@ -7,7 +7,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - uses: satackey/action-docker-layer-caching@v0.0.5
       - name: Build and Push Base Docker Image
         uses: docker/build-push-action@v1
         with:
