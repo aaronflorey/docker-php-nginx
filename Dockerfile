@@ -108,5 +108,5 @@ RUN curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8
     && pecl install pdo_sqlsrv sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv pdo_odbc \
     && apk del --no-cache $PHPIZE_DEPS freetds-dev unixodbc-dev \
-    && rm -rf /tmp/*
+    && rm -rf /tmp/* \
     && rm "$PHP_INI_DIR/conf.d/custom.ini"
