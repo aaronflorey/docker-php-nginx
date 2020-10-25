@@ -53,7 +53,7 @@ RUN apk add --update --no-cache \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
 
-RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer && composer global require hirak/prestissimo
+RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
