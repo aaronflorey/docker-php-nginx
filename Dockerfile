@@ -23,9 +23,9 @@ RUN apk add --update --no-cache \
       libtool \
       make \
       pcre-dev \
-      jpegoptim \ 
+      jpegoptim \
       optipng \
-      pngquant \ 
+      pngquant \
       vim \
       nano \
       busybox \
@@ -53,7 +53,7 @@ RUN apk add --update --no-cache \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
 
-RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer --version=1.10.16
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
