@@ -3,7 +3,7 @@ FROM php:7.4-fpm-alpine as base
 RUN apk add --update --no-cache 'imagemagick<7' 'imagemagick-dev<7' --repository=http://dl-cdn.alpinelinux.org/alpine/v3.5/main
 
 # Setup extensions
-RUN apk add --update --no-cache \
+RUN apk add --update --no-cache --virtual \
       freetype \
       libjpeg-turbo \
       libpng \
@@ -29,6 +29,7 @@ RUN apk add --update --no-cache \
       vim \
       nano \
       busybox \
+      mysql-client \
     && docker-php-ext-configure gd \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
