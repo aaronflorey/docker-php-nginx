@@ -54,7 +54,7 @@ RUN apk add --update --no-cache \
     && rm -rf /tmp/* \
     && rm /etc/nginx/conf.d/default.conf
 
-RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer --version=1.10.16
+RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -110,4 +110,5 @@ RUN curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8
     && docker-php-ext-enable sqlsrv pdo_sqlsrv pdo_odbc \
     && apk del --no-cache $PHPIZE_DEPS freetds-dev unixodbc-dev \
     && rm -rf /tmp/* \
-    && rm "$PHP_INI_DIR/conf.d/custom.ini"
+    && rm "$PHP_INI_DIR/conf.d/custom.ini" \
+    && composer self-update --1
