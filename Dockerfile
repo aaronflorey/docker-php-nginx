@@ -29,6 +29,7 @@ RUN apk add --update --no-cache \
       vim \
       nano \
       busybox \
+      gnu-libiconv \
       mysql-client \
     && docker-php-ext-configure gd \
       --with-freetype=/usr/include/ \
