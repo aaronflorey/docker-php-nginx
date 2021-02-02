@@ -19,6 +19,7 @@ RUN apk add --update --no-cache \
       supervisor \
       curl \
       autoconf \
+      icu-dev \
       g++ \
       libtool \
       make \
@@ -35,9 +36,9 @@ RUN apk add --update --no-cache \
       --with-freetype=/usr/include/ \
       --with-jpeg=/usr/include/ \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql opcache mbstring xml curl zip exif pcntl sockets soap \
+    && docker-php-ext-install -j$(nproc) intl gd pdo_mysql opcache mbstring xml curl zip exif pcntl sockets soap \
     && pecl install redis imagick \
-    && docker-php-ext-enable gd pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick sockets soap \
+    && docker-php-ext-enable gd intl pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick sockets soap \
     && apk del --no-cache \
       freetype-dev \
       libjpeg-turbo-dev \
