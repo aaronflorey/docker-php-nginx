@@ -71,7 +71,6 @@ COPY config/supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY config/supervisor/php.conf /etc/supervisor/conf.d/php.conf
 COPY config/supervisor /etc/supervisor/extras
 
-
 # configure cron
 RUN echo "*       *       *       *       *       php /var/www/html/artisan schedule:run" > /var/spool/cron/crontabs/root
 

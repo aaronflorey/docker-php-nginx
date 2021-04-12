@@ -1,46 +1,60 @@
 name: Docker Image CI
 
-on: push
+on: 
+  schedule:
+    - cron: '0 10 * * 0'
+  push:
+    branches:
+      - 'master'
 jobs:
-  build:
+  build-ecr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Watchtower ECR Helper Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          tags: buckhamduffy/watchtower-ecr-helper:latest
+          push: true
+          context: ./watchtower-ecr-helper/
+
+  build-php:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build and Push Base Docker Image
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: buckhamduffy/docker-php-nginx
           target: base
-          tags: latest, php7.4
-
-      - name: Build and Push Base Docker Image to Github
-        uses: docker/build-push-action@v1
-        with:
-          username: aaronflorey
-          password: ${{ secrets.GH_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: buckhamduffy/docker-php-nginx/base
-          target: base
-          tags: latest, php7.4
+          push: true
+          context: ./nginx-php/
+          tags: |
+            buckhamduffy/php-nginx-php:latest
+            buckhamduffy/php-nginx-php:php7.4
+          
 
       - name: Build and Push MSSQL Docker Image
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: buckhamduffy/docker-php-nginx
           target: mssql
-          tags: mssql,php7.4-mssql
-
-      - name: Build and Push MSSQL Docker Image
-        uses: docker/build-push-action@v1
-        with:
-          username: aaronflorey
-          password: ${{ secrets.GH_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: buckhamduffy/docker-php-nginx/mssql
-          target: mssql
-          tags: mssql,php7.4-mssql
+          push: true
+          context: ./nginx-php/
+          tags: |
+            buckhamduffy/php-nginx-php:mssql
+            buckhamduffy/php-nginx-php:php7.4-mssql
