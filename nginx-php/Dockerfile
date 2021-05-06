@@ -1,7 +1,5 @@
 FROM php:7.4-fpm-alpine as base
 
-RUN apk add --update --no-cache 'imagemagick<7' 'imagemagick-dev<7' --repository=http://dl-cdn.alpinelinux.org/alpine/v3.5/main
-
 # Setup extensions
 RUN apk add --update --no-cache \
       freetype \
@@ -37,8 +35,8 @@ RUN apk add --update --no-cache \
       --with-jpeg=/usr/include/ \
     && docker-php-ext-configure zip \
     && docker-php-ext-install -j$(nproc) intl gd pdo_mysql opcache mbstring xml curl zip exif pcntl sockets soap \
-    && pecl install redis imagick \
-    && docker-php-ext-enable gd intl pdo_mysql opcache mbstring xml curl zip redis exif pcntl imagick sockets soap \
+    && pecl install redis \
+    && docker-php-ext-enable gd intl pdo_mysql opcache mbstring xml curl zip redis exif pcntl sockets soap \
     && apk del --no-cache \
       freetype-dev \
       libjpeg-turbo-dev \
