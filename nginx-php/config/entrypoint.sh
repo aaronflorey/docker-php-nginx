@@ -1,7 +1,10 @@
 #!/bin/bash
 cd /var/www/html
 php artisan storage:link > /dev/null 2>&1
-php artisan migrate --force > /dev/null 2>&1
+
+if [ "$migrate" -eq "1" ]; then
+    php artisan migrate --force > /dev/null 2>&1
+fi
 
 # if [ -z "$(php artisan optimize 2>&1 >/dev/null)" ]; then
 #     echo "php artisan optimize failed, please check your code"

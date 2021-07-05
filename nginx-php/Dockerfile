@@ -51,8 +51,7 @@ RUN apk add --update --no-cache \
       pcre-dev \
       libmemcached-dev \
       $PHPIZE_DEPS \
-    && rm -rf /tmp/* \
-    && rm /etc/nginx/conf.d/default.conf
+    && rm -rf /tmp/* 
 
 RUN curl http://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
@@ -82,6 +81,9 @@ RUN mkdir -p /var/www/html && \
   chown -R nobody.nobody /var/lib/nginx && \
   chown -R nobody.nobody /var/log/nginx
 
+# Add healthcheck
+HEALTHCHECK --start-period=10s CMD curl --fail http://localhost || exit 1
+
 # Add application
 WORKDIR /var/www/html
 #COPY --chown=nobody ./ /var/www/html/
@@ -89,11 +91,10 @@ WORKDIR /var/www/html
 # Expose the port nginx is reachable on
 EXPOSE 80
 
+ENV migrate=1
+
 # Let supervisord start nginx & php-fpm
 CMD ["sh","/entrypoint.sh"]
-
-# Configure a healthcheck to validate that everything is up&running
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping
 
 FROM base as mssql
 RUN curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.5.1.1-1_amd64.apk -O \
@@ -109,5 +110,4 @@ RUN curl https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8
     && docker-php-ext-enable sqlsrv pdo_sqlsrv pdo_odbc \
     && apk del --no-cache $PHPIZE_DEPS freetds-dev unixodbc-dev \
     && rm -rf /tmp/* \
-    && rm "$PHP_INI_DIR/conf.d/custom.ini" \
-    && composer self-update --1
+    && rm "$PHP_INI_DIR/conf.d/custom.ini"
